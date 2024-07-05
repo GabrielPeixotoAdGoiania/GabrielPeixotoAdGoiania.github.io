@@ -12,9 +12,9 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
+// Evento de submit do formulário de login
 document.getElementById('login-form').addEventListener('submit', function(e) {
   e.preventDefault();
-  
   const email = document.getElementById('login-username').value;
   const password = document.getElementById('login-password').value;
 
@@ -39,6 +39,7 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
     });
 });
 
+// Evento para deslogar
 document.getElementById('logout-button').addEventListener('click', function() {
   auth.signOut().then(() => {
     document.getElementById('login-container').style.display = 'block';
@@ -53,52 +54,30 @@ document.getElementById('logout-button-user').addEventListener('click', function
   });
 });
 
-document.getElementById('member-form').addEventListener('submit', function(e) {
-  e.preventDefault();
-
-  const name = document.getElementById('member-name').value;
-  const role = document.getElementById('member-role').value;
-
-  if (name && role) {
-    const li = document.createElement('li');
-    li.innerHTML = `${name} - ${role} <button onclick="removeMember(this)">Remover</button>`;
-
-    document.getElementById('member-list').appendChild(li);
-
-    document.getElementById('member-form').reset();
-  }
-});
-
+// Evento de submit do formulário de adicionar usuário
 document.getElementById('user-form').addEventListener('submit', function(e) {
   e.preventDefault();
-
   const email = document.getElementById('new-username').value;
   const password = document.getElementById('new-password').value;
   const role = document.getElementById('new-user-role').value;
 
-  if (email && password && role) {
-    auth.createUserWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        db.collection('users').doc(user.uid).set({ email, role })
-          .then(() => {
-            const li = document.createElement('li');
-            li.innerHTML = `${email} - ${role} <button onclick="removeUser(this, '${user.uid}')">Remover</button>`;
-            document.getElementById('user-list').appendChild(li);
-            document.getElementById('user-form').reset();
-          });
-      })
-      .catch((error) => {
-        alert(error.message);
-      });
-  }
+  auth.createUserWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      db.collection('users').doc(user.uid).set({ email, role })
+        .then(() => {
+          const li = document.createElement('li');
+          li.innerHTML = `${email} - ${role} <button onclick="removeUser(this, '${user.uid}')">Remover</button>`;
+          document.getElementById('user-list').appendChild(li);
+          document.getElementById('user-form').reset();
+        });
+    })
+    .catch((error) => {
+      alert(error.message);
+    });
 });
 
-function removeMember(button) {
-  const li = button.parentElement;
-  li.remove();
-}
-
+// Função para remover usuário
 function removeUser(button, uid) {
   const li = button.parentElement;
   li.remove();
@@ -110,6 +89,7 @@ function removeUser(button, uid) {
   });
 }
 
+// Função para carregar lista de usuários
 function loadUserList() {
   const userList = document.getElementById('user-list');
   userList.innerHTML = '';
