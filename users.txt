@@ -1,0 +1,3 @@
+GabrielPeixoto,123456789,admin
+admin@example.com,hash_da_senha,admin
+user@example.com,hash_da_senha,member
