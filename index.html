@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestão de Escala de Louvor</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Gestão de Escala de Louvor</h1>
+    <form id="member-form">
+      <input type="text" id="member-name" placeholder="Nome do Membro" required>
+      <select id="member-role" required>
+        <option value="">Selecione a Função</option>
+        <option value="Vocalista">Vocalista</option>
+        <option value="Instrumentista">Instrumentista</option>
+        <option value="Técnico de Som">Técnico de Som</option>
+      </select>
+      <button type="submit">Adicionar Membro</button>
+    </form>
+    <h2>Lista de Membros</h2>
+    <ul id="member-list"></ul>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
