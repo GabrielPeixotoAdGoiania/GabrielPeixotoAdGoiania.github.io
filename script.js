@@ -18,6 +18,60 @@ async function loadUsersFromTXT() {
   }
 }
 
+// Evento de submit do formulário de login
+document.getElementById('login-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const username = document.getElementById('login-username').value;
+  const password = document.getElementById('login-password').value;
+
+  const users = await loadUsersFromTXT();
+  const user = users.find(u => u.email === username && u.password === password);
+
+  if (user) {
+    if (user.role === 'admin') {
+      document.getElementById('login-container').style.display = 'none';
+      document.getElementById('user-management-container').style.display = 'block';
+      loadUserList();
+    } else {
+      alert('Você não tem permissão para acessar a gestão de usuários.');
+    }
+  } else {
+    alert('Nome de usuário ou senha incorretos.');
+  }
+});
+
+// Evento de submit do formulário de criar conta
+document.getElementById('signup-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const username = document.getElementById('signup-username').value;
+  const password = document.getElementById('signup-password').value;
+
+  const users = await loadUsersFromTXT();
+  const existingUser = users.find(u => u.email === username);
+
+  if (existingUser) {
+    alert('Este usuário já existe.');
+  } else {
+    const newUser = `${username},${password},member\n`;
+    const updatedContent = users.join('\n') + newUser;
+
+    const response = await fetch(txtFileURL, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'text/plain'
+      },
+      body: updatedContent
+    });
+
+    if (response.ok) {
+      alert('Conta criada com sucesso!');
+      document.getElementById('signup-form').reset();
+    } else {
+      alert('Erro ao criar conta.');
+    }
+  }
+});
+
 // Evento de submit do formulário de adicionar usuário
 document.getElementById('user-form').addEventListener('submit', async function(e) {
   e.preventDefault();
@@ -25,18 +79,13 @@ document.getElementById('user-form').addEventListener('submit', async function(e
   const password = document.getElementById('new-password').value;
   const role = document.getElementById('new-user-role').value;
 
-  // Carregar usuários atuais do TXT
-  let users = await loadUsersFromTXT();
-
-  // Adicionar novo usuário ao array
+  const users = await loadUsersFromTXT();
   users.push(`${email},${password},${role}`);
 
-  // Montar novo conteúdo do arquivo TXT
   const updatedContent = users.join('\n');
 
-  // Fazer upload do TXT atualizado de volta para o GitHub (não é uma prática recomendada para produção!)
   const response = await fetch(txtFileURL, {
-    method: 'PUT', // Usar PUT para atualizar um arquivo no GitHub
+    method: 'PUT',
     headers: {
       'Content-Type': 'text/plain'
     },
@@ -68,3 +117,16 @@ async function loadUserList() {
 
 // Carregar lista de usuários ao carregar a página
 loadUserList();
+
+// Alternar entre formulários de login e criar conta
+document.getElementById('signup-link').addEventListener('click', function(e) {
+  e.preventDefault();
+  document.getElementById('login-container').style.display = 'none';
+  document.getElementById('signup-container').style.display = 'block';
+});
+
+document.getElementById('login-link').addEventListener('click', function(e) {
+  e.preventDefault();
+  document.getElementById('login-container').style.display = 'block';
+  document.getElementById('signup-container').style.display = 'none';
+});
