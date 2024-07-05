@@ -118,4 +118,8 @@ function loadUserList() {
     snapshot.forEach((doc) => {
       const user = doc.data();
       const li = document.createElement('li');
-      li.innerHTML = `${user.email} -
+      li.innerHTML = `${user.email} - ${user.role} <button onclick="removeUser(this, '${doc.id}')">Remover</button>`;
+      userList.appendChild(li);
+    });
+  });
+}
