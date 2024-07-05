@@ -5,9 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gestão de Escala de Louvor</title>
   <link rel="stylesheet" href="styles.css">
+  <!-- Adicione os scripts do Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-firestore.js"></script>
 </head>
 <body>
-  <div class="container">
+  <!-- Restante do seu HTML -->
+  <div class="container" id="login-container">
+    <h1>Login</h1>
+    <form id="login-form">
+      <input type="text" id="login-username" placeholder="Email" required>
+      <input type="password" id="login-password" placeholder="Senha" required>
+      <button type="submit">Entrar</button>
+    </form>
+  </div>
+
+  <div class="container" id="schedule-container" style="display: none;">
     <h1>Gestão de Escala de Louvor</h1>
     <form id="member-form">
       <input type="text" id="member-name" placeholder="Nome do Membro" required>
@@ -21,7 +35,26 @@
     </form>
     <h2>Lista de Membros</h2>
     <ul id="member-list"></ul>
+    <button id="logout-button">Sair</button>
   </div>
+
+  <div class="container" id="user-management-container" style="display: none;">
+    <h1>Gestão de Usuários</h1>
+    <form id="user-form">
+      <input type="text" id="new-username" placeholder="Email do Usuário" required>
+      <input type="password" id="new-password" placeholder="Senha" required>
+      <select id="new-user-role" required>
+        <option value="">Selecione o Tipo de Usuário</option>
+        <option value="admin">Administrador</option>
+        <option value="member">Usuário Comum</option>
+      </select>
+      <button type="submit">Adicionar Usuário</button>
+    </form>
+    <h2>Lista de Usuários</h2>
+    <ul id="user-list"></ul>
+    <button id="logout-button-user">Sair</button>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
