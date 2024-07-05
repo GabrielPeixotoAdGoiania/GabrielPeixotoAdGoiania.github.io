@@ -130,3 +130,10 @@ document.getElementById('login-link').addEventListener('click', function(e) {
   document.getElementById('login-container').style.display = 'block';
   document.getElementById('signup-container').style.display = 'none';
 });
+
+// Botão de logout
+document.getElementById('logout-button').addEventListener('click', function(e) {
+  e.preventDefault();
+  document.getElementById('user-management-container').style.display = 'none';
+  document.getElementById('login-container').style.display = 'block';
+});
